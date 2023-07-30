@@ -3,12 +3,13 @@ package com.simon.metronome;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-
-    TickingThread tickingThread;
+    MetronomeContext metronome;
+    Button startStopButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,9 +17,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView metronomeMark = findViewById(R.id.textView);
         SeekBar speedSlider = findViewById(R.id.seekBar);
-        MetronomeContext metronome = new MetronomeContext(getApplicationContext());
-        metronome.setBpm(60);
+        metronome = new MetronomeContext(getApplicationContext());
         metronome.startMetronome();
+        startStopButton = findViewById(R.id.start_stop_button);
         speedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -31,17 +32,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+        startStopButton.setOnClickListener(view -> {
+            if (metronome.getMetronomeOn()) {
+                metronome.stopMetronome();
+            } else {
+                metronome.startMetronome();
+            }
+        });
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        tickingThread.playSound(false);
+        metronome.stopMetronome();
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        tickingThread.playSound(true);
+        metronome.startMetronome();
     }
 }

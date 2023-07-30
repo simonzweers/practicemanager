@@ -39,6 +39,10 @@ public class MetronomeContext {
         this.bpm = bpm;
     }
 
+    public boolean getMetronomeOn() {
+        return this.playNext;
+    }
+
     private int getIntervalMillis(int bpm) {
         return Math.round(60000f / bpm);
     }
