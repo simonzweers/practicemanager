@@ -3,6 +3,7 @@ package com.simon.metronome;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -13,11 +14,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tickingThread = new TickingThread(getApplicationContext());
-        Thread thread = new Thread(tickingThread);
-        thread.start();
         TextView metronomeMark = findViewById(R.id.textView);
-        metronomeMark.setText("Text View");
+        SeekBar speedSlider = findViewById(R.id.seekBar);
+        speedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                metronomeMark.setText("Value of slider: " + speedSlider.getProgress());
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
     }
 
     @Override
