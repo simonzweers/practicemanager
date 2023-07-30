@@ -16,10 +16,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView metronomeMark = findViewById(R.id.textView);
         SeekBar speedSlider = findViewById(R.id.seekBar);
+        MetronomeContext metronome = new MetronomeContext(getApplicationContext());
+        metronome.setBpm(60);
+        metronome.startMetronome();
         speedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                metronomeMark.setText("Value of slider: " + speedSlider.getProgress());
+                int value = speedSlider.getProgress();
+                metronomeMark.setText("Value of slider: " + value);
+                metronome.setBpm(value);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
